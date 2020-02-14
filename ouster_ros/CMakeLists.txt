@@ -54,6 +54,10 @@ add_executable(os1_cloud_node src/os1_cloud_node.cpp)
 target_link_libraries(os1_cloud_node ouster_ros ${catkin_LIBRARIES})
 add_dependencies(os1_cloud_node ${PROJECT_NAME}_gencpp)
 
+add_executable(os1_laserscan_node src/os1_laserscan_node.cpp)
+target_link_libraries(os1_laserscan_node ouster_ros ${catkin_LIBRARIES})
+add_dependencies(os1_laserscan_node ${PROJECT_NAME}_gencpp)
+
 add_executable(viz_node src/viz_node.cpp)
 target_link_libraries(viz_node ${catkin_LIBRARIES})
 add_dependencies(viz_node ${PROJECT_NAME}_gencpp)
@@ -64,6 +68,7 @@ add_dependencies(img_node ${PROJECT_NAME}_gencpp)
 
 install(TARGETS os1_node
                 os1_cloud_node
+                os1_laserscan_node
                 viz_node
                 img_node
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}

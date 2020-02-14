@@ -9,6 +9,7 @@
 #include <pcl/point_cloud.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/PointCloud2.h>
+#include <sensor_msgs/LaserScan.h>
 #include <chrono>
 #include <string>
 
@@ -20,6 +21,7 @@ namespace ouster_ros {
 namespace OS1 {
 
 using CloudOS1 = pcl::PointCloud<PointOS1>;
+using LaserScanOS1 = pcl::PointCloud<Point2dOS1>;
 using ns = std::chrono::nanoseconds;
 
 /**

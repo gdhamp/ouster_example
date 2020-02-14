@@ -48,6 +48,24 @@ std::vector<double> make_xyz_lut(
     const std::vector<double>& beam_altitude_angles);
 
 /**
+ * Generate a matrix of unit vectors pointing radially outwards, useful for
+ * efficiently computing cartesian coordinates from ranges.  The result is a n x
+ * 2 array of doubles stored in row-major order where each row is the unit
+ * vector corresponding to the nth point in a lidar scan, with 0 <= n < H*W. The
+ * index into the lidar scan of a point can be obtained by H * j + i (where i is
+ * the index to nth_px, and j is the measurement_id of the column, when reading
+ * from a packet).
+ * @param W number of columns in the lidar scan. One of 512, 1024, or 2048.
+ * @param H number of rows in the lidar scan. 64 for the OS1 family of sensors.
+ * @param beam_azimuth_angles azimuth offsets in degrees for each of H beams
+ * @param beam_altitude_angles altitude in degrees for each of H beams
+ * @return xyz direction unit vectors for each point in the lidar scan
+ */
+std::vector<double> make_closest_xyz_lut(
+    int W, int H, const std::vector<double>& beam_azimuth_angles,
+    const std::vector<double>& beam_altitude_angles);
+
+/**
  * Generate a table of pixel offsets based on the scan width (512, 1024, or 2048
  * columns). These can be used to create a de-staggered range image where each
  * column of pixels has the same azimuth angle from raw sensor output.

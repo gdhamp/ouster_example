@@ -1,5 +1,6 @@
 #include <cmath>
 #include <vector>
+#include <limits>
 
 #include "ouster/os1_packet.h"
 
@@ -52,6 +53,37 @@ std::vector<double> make_xyz_lut(int W, int H,
             xyz[ind + 1] = -std::cos(altitude_angles[ipx] * 2 * M_PI / 360.0) *
                            std::sin(h_angle);
             xyz[ind + 2] = std::sin(altitude_angles[ipx] * 2 * M_PI / 360.0);
+        }
+    }
+    return xyz;
+}
+
+std::vector<double> make_closest_xyz_lut(int W, int H,
+                                 const std::vector<double>& azimuth_angles,
+                                 const std::vector<double>& altitude_angles) {
+	double z;
+    const int n = W;
+ 	// use max so z axis compare works to find closest
+    std::vector<double> xyz = std::vector<double>(3 * n, std::numeric_limits<double>::max());
+
+    for (int icol = 0; icol < W; icol++) {
+        double h_angle_0 = 2.0 * M_PI * icol / W;
+        for (int ipx = 0; ipx < H; ipx++) {
+            int ind = 3 * (icol + ipx);
+            double h_angle =
+                (azimuth_angles.at(ipx) * 2 * M_PI / 360.0) + h_angle_0;
+
+
+			// get z first to see if it is the closest point
+			z = std::sin(altitude_angles[ipx] * 2 * M_PI / 360.0);
+
+			if (z < xyz[ind+2]) {
+                xyz[ind + 0] = std::cos(altitude_angles[ipx] * 2 * M_PI / 360.0) *
+                               std::cos(h_angle);
+                xyz[ind + 1] = -std::cos(altitude_angles[ipx] * 2 * M_PI / 360.0) *
+                               std::sin(h_angle);
+                xyz[ind + 2] = z;
+			}
         }
     }
     return xyz;

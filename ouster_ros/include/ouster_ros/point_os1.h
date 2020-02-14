@@ -26,10 +26,39 @@ struct EIGEN_ALIGN16 PointOS1 {
         return {x, y, z, 0.0, intensity, t, reflectivity, ring, noise, range};
     }
 };
+
+struct EIGEN_ALIGN16 Point2dOS1 {
+    PCL_ADD_POINT4D;
+	// TBD are these needed???
+    float intensity;
+    uint32_t t;
+    uint16_t reflectivity;
+    uint8_t ring;
+    uint16_t noise;
+    uint32_t range;
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
+    static inline Point2dOS1 make(float x, float y, float intensity,
+                                uint32_t t, uint16_t reflectivity, uint8_t ring,
+                                uint16_t noise, uint32_t range) {
+        return {x, y, 0.0, 0.0, intensity, t, reflectivity, ring, noise, range};
+    }
+};
 }
 }
 
 // clang-format off
+POINT_CLOUD_REGISTER_POINT_STRUCT(ouster_ros::OS1::Point2dOS1,
+    (float, x, x)
+    (float, y, y)
+    (float, intensity, intensity)
+    (uint32_t, t, t)
+    (uint16_t, reflectivity, reflectivity)
+    (uint8_t, ring, ring)
+    (uint16_t, noise, noise)
+    (uint32_t, range, range)
+)
+
 POINT_CLOUD_REGISTER_POINT_STRUCT(ouster_ros::OS1::PointOS1,
     (float, x, x)
     (float, y, y)
